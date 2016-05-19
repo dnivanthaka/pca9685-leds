@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
 {
     int fd;
     
-    fd = open("/dev/i2c-1", O_RDWR);
+    fd = open("/dev/i2c-1", O_RDWR|O_SYNC);
     if(fd < 0){
         printf("Error opening file: %s\n", strerror(errno));
         return EXIT_FAILURE;
