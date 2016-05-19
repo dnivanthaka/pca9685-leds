@@ -4,6 +4,7 @@
 #include <linux/i2c-dev.h>
 #include <errno.h>
 #include <sys/types.h>
+#include <stdint.h>
 
 #include "pca9685.h"
 
@@ -17,13 +18,13 @@ uint8_t pca9685_read_regs(int fd, uint8_t* regs, uint8_t* data, int count);
 uint8_t pca9685_write_regs(int fd, uint8_t* regs, uint8_t* data, int count);
 //uint8_t[2] mode_regs = {0x00, 0x00};
 
-uint8_t[76] pca9685_regs = {0};
+uint8_t pca9685_regs[76] = {0};
 
 int main(int argc, char* argv[])
 {
     int fd;
     
-    fd = open("/dev/i2c-1", O_RDWR|O_SYNC);
+    fd = open("/dev/i2c-1", O_RDWR);
     if(fd < 0){
         printf("Error opening file: %s\n", strerror(errno));
         return EXIT_FAILURE;
@@ -33,6 +34,8 @@ int main(int argc, char* argv[])
         printf("ioctl error");
         return EXIT_FAILURE;
     }
+
+    usleep(1000);
     
     pca9685_init(fd);
     
@@ -48,9 +51,9 @@ void pca9685_init(int fd)
     pca9685_regs[MODE1] = pca9685_read_byte(fd);
     pca9685_write_byte(fd, MODE2);
     pca9685_regs[MODE2] = pca9685_read_byte(fd);
-    
-    prinf("MODE1 = %x\n", pca9685_regs[MODE1]);
-    prinf("MODE2 = %x\n", pca9685_regs[MODE2]);
+
+    printf("MODE1 = %x\n", pca9685_regs[MODE1]);
+    printf("MODE2 = %x\n", pca9685_regs[MODE2]);
     
     if(pca9685_regs[MODE1] != 0x11 || pca9685_regs[MODE2] != 0x04){
         printf("Invalid status values read.\n");
@@ -60,7 +63,7 @@ void pca9685_init(int fd)
 
 uint8_t pca9685_write_byte(int fd, uint8_t data)
 {
-    return write(fd, data, 1);
+    return write(fd, &data, 1);
 }
 
 uint8_t pca9685_read_byte(int fd)
