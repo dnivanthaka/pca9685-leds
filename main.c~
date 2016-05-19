@@ -34,8 +34,6 @@ int main(int argc, char* argv[])
         return EXIT_FAILURE;
     }
     
-    pca9685_init(fd);
-    
     close(fd);
     
     return 0;
