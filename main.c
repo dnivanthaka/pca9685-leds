@@ -42,6 +42,8 @@ int main(int argc, char* argv[])
     }
     
     pca9685_init(fd);
+    pca9685_write_reg_pair(fd, LED0_ON_L, 0x199);
+    pca9685_write_reg_pair(fd, LED0_OFF_L, 0x4CC);
     
     close(fd);
     
