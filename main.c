@@ -20,7 +20,7 @@ uint8_t pca9685_write_reg_pair(int fd, uint8_t reg, uint16_t data);
 uint16_t pca9685_read_reg_pair(int fd, uint8_t reg);
 
 uint8_t pca9685_read_regs(int fd, uint8_t st_reg, uint8_t* data, int count);
-//uint8_t pca9685_write_regs(int fd, uint8_t* regs, uint8_t* data, int count);
+uint8_t pca9685_write_regs(int fd, uint8_t st_reg, uint8_t* data, int count);
 
 //uint8_t pca9685_setpin(int fd, uint8_t pin, uint16_t low, uint16_t high);
 //uint8_t[2] mode_regs = {0x00, 0x00};
@@ -121,8 +121,10 @@ uint8_t pca9685_write_reg(int fd, uint8_t reg, uint8_t data)
     
     if(write(fd, dta, 2) < 0){
         printf("Cannot write to reg %x\n", reg);
-        return -1;
+        return 0;
     }
+    
+    return 1;
 }
 
 uint8_t pca9685_read_reg(int fd, uint8_t reg)
@@ -131,12 +133,12 @@ uint8_t pca9685_read_reg(int fd, uint8_t reg)
     
     if(write(fd, &reg, 1) < 0){
         printf("Cannot write to reg %x\n", reg);
-        return -1;
+        return 0;
     }
     
     if(read(fd, &data, 1) < 0){
         printf("Cannot read from reg %x\n", reg);
-        return -1;
+        return 0;
     }
     return data;
 }
