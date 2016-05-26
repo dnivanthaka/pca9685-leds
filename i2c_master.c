@@ -84,7 +84,6 @@ int i2c_mread_reg_pair(int fd, uint8_t reg)
     
     byte[0] = i2c_mread_reg(fd, reg);
     byte[1] = i2c_mread_reg(fd, reg + 1);
-    byte[1] &= 0x1f;
     
     word = (8 << byte[1]) | byte[0];
     return word;
