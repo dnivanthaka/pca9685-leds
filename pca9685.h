@@ -29,6 +29,7 @@
 #define LED3_OFF_H   0x15
 
 #define SLEEP_BIT    (1 << 4)
-#define AI_BIT    (1 << 5)
+#define AI_BIT       (1 << 5)
+#define RESTART_BIT  (1 << 7)
 
 #endif
