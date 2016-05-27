@@ -23,6 +23,13 @@ int i2c_mopen(uint8_t channel)
     return fd;
 }
 
+void i2c_mclose(int fd)
+{
+    if(fd){
+        close(fd);
+    }
+}
+
 int i2c_mset_addr(int fd, uint8_t addr)
 {
     if(ioctl(fd, I2C_SLAVE, addr) < 0){
@@ -102,15 +109,13 @@ int i2c_mread_regs(int fd, uint8_t st_reg, uint8_t* data, uint8_t count)
         return -1;
     }
     
-    
     return count;
 }
 
 int i2c_mwrite_regs(int fd, uint8_t st_reg, uint8_t* data, uint8_t count)
 {
     int i;
-    
-    
+      
     if(write(fd, &st_reg, 1) < 0){
         printf("Cannot write to reg %x\n", st_reg);
         return -1;
