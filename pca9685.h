@@ -32,4 +32,6 @@
 #define AI_BIT       (1 << 5)
 #define RESTART_BIT  (1 << 7)
 
+void pca9685_init(int fd);
+
 #endif
