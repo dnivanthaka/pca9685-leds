@@ -16,7 +16,6 @@
 //uint8_t pca9685_setpin(int fd, uint8_t pin, uint16_t low, uint16_t high);
 //uint8_t[2] mode_regs = {0x00, 0x00};
 
-uint8_t pca9685_regs[76] = {0};
 
 int main(int argc, char* argv[])
 {
@@ -49,7 +48,7 @@ int main(int argc, char* argv[])
         i2c_mwrite_reg_pair(fd, LED3_OFF_L, tmp + 1023);
 
 	tmp = rand() % 10000;
-	usleep(tmp * 15);
+	usleep(tmp * 25);
     }
     
     i2c_mclose(fd);

@@ -10,6 +10,8 @@
 #include "pca9685.h"
 #include "i2c_master.h"
 
+uint8_t pca9685_regs[76] = {0};
+
 void pca9685_init(int fd)
 {
     //Check for valid device reg values
