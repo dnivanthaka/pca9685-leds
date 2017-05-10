@@ -33,10 +33,10 @@ void pca9685_init(int fd)
     printf("MODE1 = %x\n", pca9685_regs[MODE1]);
     printf("MODE2 = %x\n", pca9685_regs[MODE2]);
     
-    if(pca9685_regs[MODE1] != 0x11 || pca9685_regs[MODE2] != 0x04){
+    /*if(pca9685_regs[MODE1] != 0x11 || pca9685_regs[MODE2] != 0x04){
         printf("Invalid status values read.\n");
         return;
-    }
+    }*/
 
     //uint8_t tmp[2] = {0};
     //pca9685_read_regs(fd, MODE1, tmp, 1);
@@ -47,6 +47,32 @@ void pca9685_init(int fd)
     pca9685_regs[MODE1] &= ~SLEEP_BIT;
     i2c_mwrite_reg(fd, MODE1, pca9685_regs[MODE1]);
     //delay as per datasheet
+    usleep(1000);
+}
+
+void pca9685_sleep(int fd)
+{
+    pca9685_regs[MODE1] |= SLEEP_BIT;
+    i2c_mwrite_reg(fd, MODE1, pca9685_regs[MODE1]);
+    usleep(1000);
+}
+
+void pca9685_reset(int fd)
+{
+    pca9685_regs[MODE1] = i2c_mread_reg(fd, MODE1);
+    if(pca9685_regs[MODE1] & 0x80){
+        pca9685_regs[MODE1] &= ~SLEEP_BIT;
+        i2c_mwrite_reg(fd, MODE1, pca9685_regs[MODE1]);
+	usleep(1000);
+    }
+    pca9685_regs[MODE1] |= RESTART_BIT;
+    i2c_mwrite_reg(fd, MODE1, pca9685_regs[MODE1]);
+    usleep(1000);
+}
+
+void pca9685_shutdown(int fd)
+{
+    i2c_mwrite_reg(fd, ALL_LED_OFF_H, 0x10);
     usleep(1000);
 }
 
